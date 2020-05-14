@@ -1,0 +1,58 @@
+// Lowest Common Ancestor of Binary Search Tree
+// https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        
+        List<TreeNode> pA = new ArrayList<TreeNode>();
+        List<TreeNode> qA = new ArrayList<TreeNode>();   
+        
+        findPath(root, p, pA);
+        findPath(root, q, qA);
+        
+        int min = Math.min(pA.size(), qA.size());
+        int count = 0;
+        for(int i=0; i<min; i++){
+            
+            if(pA.get(i) == qA.get(i)){
+                count++;
+            }                            
+        } 
+        if(count > 0)
+            return pA.get(count-1);
+        else
+            return null;
+    }
+    
+    private boolean findPath(TreeNode root, TreeNode node, List<TreeNode> list){
+        
+        if(root == null)
+            return false;
+        
+        list.add(root);
+        if(root == node)
+            return true;
+
+        if(node.val < root.val){
+            if(findPath(root.left, node, list))
+                return true;
+        }else {
+            if(findPath(root.right, node, list))
+                return true;
+        }
+        
+        list.remove(list.size()-1);
+        return false;
+    }
+}
+    
