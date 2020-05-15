@@ -7,10 +7,8 @@
  *     TreeNode right;
  *     TreeNode(int x) { val = x; }
  * }
- */
- 
+ */ 
 // [1] recursive
-
 class Solution {
     
     private List<Integer> list;
@@ -18,11 +16,9 @@ class Solution {
         
         list = new ArrayList<>();
         if(root == null)
-            return list;
-        
+            return list;        
         inorder(root);
-        return list;
-        
+        return list;        
     }
     
     private void inorder(TreeNode root){
@@ -34,5 +30,42 @@ class Solution {
         list.add(root.val);
         inorder(root.right);        
         
+    }
+}
+
+// [2] iteration with stack
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+    public List<Integer> inorderTraversal(TreeNode root) {        
+      
+        List<Integer> list = new ArrayList<>();
+        if(root == null)
+            return list; 
+        
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+            
+        TreeNode cur = root.left;        
+        while(!stack.isEmpty() || cur != null){
+        
+            while(cur != null){
+                stack.push(cur);
+                cur = cur.left;
+            }
+            
+            TreeNode node = stack.pop();
+            list.add(node.val);
+            cur = node.right;    
+        }        
+        return list;  
     }
 }
