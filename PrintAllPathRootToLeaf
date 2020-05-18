@@ -1,0 +1,94 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+// Method 1 : Using List Array
+class Solution {
+    
+    private void path(TreeNode root, List<Integer> list, List<String> ret){
+    
+        if(root == null)
+            return;
+        
+        list.add(root.val);
+        if(root.left == null && root.right == null){
+            
+            String str = String.valueOf(list.get(0));
+            for(int i=1; i<list.size(); i++){
+                
+                str += "->";
+                str += list.get(i);
+            }
+            
+            ret.add(str);
+            list.remove(list.size()-1);
+        
+            return;
+        }
+        
+        path(root.left, list, ret);
+        path(root.right, list, ret);
+        list.remove(list.size()-1);
+        
+        
+    }
+    
+    public List<String> binaryTreePaths(TreeNode root) {
+        
+        List<Integer> list = new ArrayList<>();
+        List<String> ret = new ArrayList<>();
+        
+        path(root, list, ret);
+        
+        return ret;
+    }
+}
+
+// method 2 : using String 
+class Solution {
+    
+    private void path(TreeNode root, String ancestor, List<String> ret){
+    
+        if(root == null)
+            return;
+           
+        if(ancestor.length() <= 0){            
+            ancestor = String.valueOf(root.val);
+        }
+        else{
+            ancestor += "->";
+            ancestor += String.valueOf(root.val);
+        }
+        
+        if(root.left == null && root.right == null){
+            ret.add(ancestor);
+            return;
+        }
+        path(root.left, ancestor, ret);
+        path(root.right, ancestor, ret);
+      
+        
+    }
+    
+    public List<String> binaryTreePaths(TreeNode root) {
+        
+        List<String> ret = new ArrayList<>();
+        
+        String str = String.valueOf("");        
+        path(root, str, ret);
+        
+        return ret;
+    }
+}
