@@ -1,0 +1,92 @@
+// Binary Search Tree Implementation
+// search --> https://leetcode.com/problems/search-in-a-binary-search-tree/
+// insert --> https://leetcode.com/problems/insert-into-a-binary-search-tree/
+// delete --> https://leetcode.com/problems/delete-node-in-a-bst/
+// 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+             
+        if(root == null)
+            return null;
+        
+        if(root.val == val)
+            return root;
+        
+        TreeNode node = null;
+        node = searchBST(root.left, val);
+        if(node != null)
+            return node;
+        
+        node = searchBST(root.right, val);
+        if(node != null)
+            return node;
+        
+        return node;
+         
+    }
+    
+    
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+   
+        if(root == null)
+            return new TreeNode(val);
+        
+        if(root.val > val)
+            root.left = insertIntoBST(root.left, val);
+        else
+            root.right = insertIntoBST(root.right, val);
+        
+        return root;
+    }
+    
+     private int findMinNode(TreeNode root){
+    
+        TreeNode pre = null;
+        TreeNode cur = root;
+        
+        while(cur != null){
+            pre = cur;
+            cur = cur.left;
+        }
+        
+        return pre.val;
+    }
+    
+    public TreeNode deleteNode(TreeNode root, int key) {
+        
+        if(root == null)
+            return null;
+        
+        if(root.val == key){
+            
+            if(root.left == null && root.right == null)
+                return null;
+            else if(root.left != null && root.right == null)
+                return root.left;
+            else if(root.left == null && root.right != null)
+                return root.right;
+            else{
+                
+                root.val = findMinNode(root.right);              
+                root.right = deleteNode(root.right, root.val);
+                return root;
+            }               
+        }
+        
+        if(root.val > key)
+            root.left = deleteNode(root.left, key);
+        else
+            root.right = deleteNode(root.right, key);
+        
+        return root;
+    }
+}
