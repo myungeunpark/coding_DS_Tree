@@ -1,0 +1,86 @@
+//https://leetcode.com/problems/balanced-binary-tree/
+/*
+Given a binary tree, determine if it is height-balanced.
+For this problem, a height-balanced binary tree is defined as:
+a binary tree in which the left and right subtrees of every node differ in height by no more than 1.
+
+Example 1:
+
+Given the following tree [3,9,20,null,null,15,7]:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+Return true.
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ // [1] Using MaxDepth() --> Time : O(N*N)
+class Solution {
+    
+    
+    private int maxDepth(TreeNode root){
+        
+        if(root == null)
+            return 0;
+        
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+    public boolean isBalanced(TreeNode root) {
+ 
+        if(root == null)
+            return true;
+            
+        if(Math.abs(maxDepth(root.left) - maxDepth(root.right)) > 1)
+            return false;
+        
+        if(!isBalanced(root.left))
+            return false;
+        
+        if(!isBalanced(root.right))
+            return false;
+        
+        
+        return true;
+    }
+}
+
+// [2] Method 2 -> Time O(N)
+class Solution {
+        
+    private int maxDepth(TreeNode root){
+        
+        if(root == null)
+            return 0;
+        
+        int maxLeft = maxDepth(root.left); 
+        if(maxLeft == -1)
+            return -1;
+        int maxRight = maxDepth(root.right); 
+        if(maxRight == -1)
+            return -1;
+                        
+        if(Math.abs(maxLeft - maxRight) > 1)
+            return -1;
+        else
+            return Math.max(maxLeft, maxRight) + 1;
+    }
+    
+    public boolean isBalanced(TreeNode root) {
+ 
+        if(root == null) return true;
+        
+        return maxDepth(root) != -1;
+    }
+}
+
