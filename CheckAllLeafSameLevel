@@ -1,0 +1,40 @@
+// https://practice.geeksforgeeks.org/problems/leaf-at-same-level/1
+// check if all leaves of a given binary tree are at the same level
+
+class GfG
+{
+    int level = -1;
+    boolean traverse(Node root, int depth){
+        
+        if(root == null)
+            return true;
+        
+        if(root.left == null && root.right == null) // leaf
+        {
+            if(level == -1)
+                level = depth+1;
+            else{
+                
+                if(level != depth + 1)
+                    return false;
+            }
+            
+            return true;
+        }
+        
+        if(!traverse(root.left, depth+1))
+            return false;
+        
+        if(!traverse(root.right, depth+1))
+            return false;
+            
+        return true;
+        
+            
+    }
+    
+    boolean check(Node root)
+    {
+	    return traverse(root, 0);
+    }
+}
