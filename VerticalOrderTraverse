@@ -1,0 +1,88 @@
+// Vertical Order Traversal of a Binary Tree
+// https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+ 
+    HashMap<Integer, HashMap<Integer, List<Integer>>> hash = null;
+    
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+         
+        List<List<Integer>> ret = new ArrayList<>();
+        hash = new HashMap<>();
+        getPosition(root, 0, 0);
+        
+        
+        List<Integer> keys = new ArrayList<>(hash.keySet());
+        Collections.sort(keys);
+        
+        for(int i=0; i<keys.size(); i++){
+            
+            // result
+            List<Integer> list = new ArrayList<>();
+            
+            HashMap<Integer, List<Integer>> yHash = hash.get(keys.get(i));
+            List<Integer> ykeys = new ArrayList<>(yHash.keySet());
+            Collections.sort(ykeys, Collections.reverseOrder());
+            
+            for(int j=0; j<ykeys.size(); j++){
+                
+                List<Integer> item = yHash.get(ykeys.get(j));
+                if(item.size() > 1)
+                    Collections.sort(item);
+                list.addAll(item);                
+            }
+            
+            ret.add(list);
+        }            
+        
+        return ret;
+        
+    }
+    
+    private void getPosition(TreeNode root, int x, int y){
+        
+        if(root == null)
+            return;
+        
+        HashMap<Integer, List<Integer>> dataMap = null;
+        if(!hash.containsKey(x)){
+            
+            dataMap = new HashMap<>();
+            List<Integer> list = new ArrayList<>();
+            list.add(root.val);
+            dataMap.put(y, list); // y
+            hash.put(x, dataMap);
+            
+        }else{
+            
+            dataMap = hash.get(x);
+            if(!dataMap.containsKey(y)){
+                
+                List<Integer> list = new ArrayList<>();
+                list.add(root.val);
+                dataMap.put(y, list); // y
+                hash.put(x, dataMap);
+                
+            }else{
+                
+                List<Integer> list = dataMap.get(y);
+                list.add(root.val);
+                dataMap.put(y, list); // y
+                hash.put(x, dataMap); // x
+            }
+        }        
+        
+        getPosition(root.left, x-1, y-1);
+        getPosition(root.right,  x+1, y-1);
+        
+    }
+}
