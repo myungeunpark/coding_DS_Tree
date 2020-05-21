@@ -1,0 +1,39 @@
+// Convert Binary Tree To Binary Search Tree
+// https://practice.geeksforgeeks.org/problems/binary-tree-to-bst/1
+class GfG
+{
+    void inOrder(Node root, List<Integer> list){
+        
+        if(root == null)
+            return;
+            
+        inOrder(root.left, list);
+        list.add(root.data);
+        inOrder(root.right, list);
+    }
+    
+    void change(Node root, List<Integer> list){
+        
+        if(root == null)
+            return;
+            
+        change(root.left, list);
+        root.data = list.get(0);
+        list.remove(0);
+        change(root.right, list);
+    }
+    /* You are required to complete below method */
+    Node binaryTreeToBST(Node root)
+    {
+       // binary to list
+       List<Integer> list = new ArrayList<>();
+       inOrder(root, list);
+       
+       Collections.sort(list);
+       change(root, list);
+       
+       return root;
+       
+    }
+}
+ 
