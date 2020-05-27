@@ -1,0 +1,59 @@
+// Find distance of two nodes in Binary Tree
+// https://practice.geeksforgeeks.org/problems/min-distance-between-two-given-nodes-of-a-binary-tree/1
+// FUNCTION CODE
+/* A Binary Tree node
+class Node
+{
+    int data;
+    Node left, right;
+   Node(int item)    {
+        data = item;
+        left = right = null;
+    }
+} */
+
+/* Should return minimum distance between a and b
+   in a tree with given root*/
+class GfG {
+    
+    int findDist(Node root, int a, int b) {
+        // Your code here
+        
+        List<Node> listA = new ArrayList<>();
+        List<Node> listB = new ArrayList<>();
+        findPath(root, a, listA);
+        findPath(root, b, listB);
+        
+        //common ancestors
+        int min = Math.min(listA.size(), listB.size());
+        int common = 0;
+        for(int i=0; i < min; i++){
+            if(listA.get(i) != listB.get(i))
+                break;
+            common++;
+        }
+        
+        int dist = (listA.size()-1) + (listB.size()-1) - ((common-1) * 2);
+        return dist;
+    }
+    
+    boolean findPath(Node root, int val, List<Node> list){
+        
+        if(root == null)
+            return false;
+        
+        list.add(root);
+        if(root.data == val)
+            return true;
+            
+        if(findPath(root.left, val, list))
+            return true;
+        
+        if(findPath(root.right, val, list))
+            return true;
+     
+        list.remove(list.size()-1);
+        return false;
+    }
+    
+}
