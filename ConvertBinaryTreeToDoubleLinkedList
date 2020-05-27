@@ -1,0 +1,54 @@
+// Convert Binary Tree to Double Linked List
+// https://practice.geeksforgeeks.org/problems/binary-tree-to-dll/1
+
+class Node
+{
+	Node left, right;
+	int data;
+	
+	Node(int d)
+	{
+		data = d;
+		left = right = null;
+	}
+	
+}*/
+
+// This function should convert a given Binary tree to Doubly
+// Linked List
+
+class GfG
+{
+    Node head = null;
+    Node prev = null;
+    
+    Node bToDLL(Node root)
+    {
+       inOrder(root);
+       
+       return head;
+    }
+    
+    void inOrder(Node root){
+       
+        if(root == null)
+            return;
+            
+        inOrder(root.left);
+        
+        Node newNode = new Node(root.data);
+        if(head == null){
+            
+            head = newNode;
+            prev = head;
+            
+        }else{
+            
+            prev.right = newNode;
+            newNode.left = prev;
+            prev = newNode;
+        }
+       
+        inOrder(root.right);
+    }
+}
