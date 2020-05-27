@@ -1,0 +1,54 @@
+// Subtree of Another Tree
+// https://leetcode.com/problems/subtree-of-another-tree/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        
+        if(isSame(s, t))
+            return true;
+        
+        if(s != null){
+            if(isSubtree(s.left, t))
+                return true;
+                
+            if(isSubtree(s.right, t))
+                return true;
+        }
+        
+        return false;
+        
+    }
+    
+    private boolean isSame(TreeNode root, TreeNode t){
+        
+        if(root == null && t == null)
+            return true;
+        
+        if(root == null && t != null)
+            return false;
+        
+        if(root != null && t == null)
+            return false;
+                
+        if(root.val != t.val)
+            return false;
+        
+        if(!isSame(root.left, t.left))
+            return false;
+        
+        if(!isSame(root.right, t.right))
+            return false;
+        
+        return true;        
+        
+    }
+}
