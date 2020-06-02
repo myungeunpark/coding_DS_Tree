@@ -1,0 +1,115 @@
+// Prefix Tree
+// https://leetcode.com/problems/implement-trie-prefix-tree/
+
+class Node{
+   
+    static public int SIZE = 26; 
+    Node [] links = null;
+    private boolean isEnd;
+    
+    public Node(){        
+        
+        links = new Node[SIZE];
+        for(int i=0; i<SIZE; i++)
+            links[i] = null;
+        isEnd = false;
+    }
+    
+    public void insert(char val, Node node){        
+        links[val - 'a'] = node;        
+    }
+        
+    public boolean containKey(char key){
+        
+        if(links[key - 'a'] != null)
+            return true;
+        else
+            return false;
+    }
+    
+    public void setEnd(boolean end){
+        isEnd = end;
+    }
+    
+    public boolean isEnd(){
+        return isEnd;
+    }
+}
+
+class Trie {
+
+    Node root = null;
+    
+    /** Initialize your data structure here. */
+    public Trie() {
+        root = new Node();    
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        
+        if(word.length() <= 0)
+            return;
+        
+        Node cur = root;
+        for(int i=0; i<word.length(); i++){
+            char data = word.charAt(i);
+            
+            if(!cur.containKey(data))
+                cur.links[data - 'a'] = new Node();                 
+                    
+            cur = cur.links[data - 'a'];            
+        }
+        cur.setEnd(true);
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        
+        if(word.length() <= 0)
+            return false;
+        
+        Node cur = root;
+        for(int i=0; i<word.length(); i++){
+            char data = word.charAt(i);
+            
+            if(!cur.containKey(data))
+                return false;
+                                
+            cur = cur.links[data - 'a'];            
+        }
+        
+        if(cur.isEnd())           
+            return true;                 
+        else            
+            return false;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        
+        if(prefix.length() <= 0)
+            return false;
+        
+        Node cur = root;
+        for(int i=0; i<prefix.length(); i++){
+            char data = prefix.charAt(i);
+            
+            if(!cur.containKey(data))
+                return false;
+                                
+            cur = cur.links[data - 'a'];            
+        }
+        
+        
+        return true;
+     }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
