@@ -1,5 +1,9 @@
 // Prefix Tree
 // https://leetcode.com/problems/implement-trie-prefix-tree/
+// https://leetcode.com/problems/implement-trie-prefix-tree/solution/
+// benefits (auto complete, spell checking, text prediction, dictionary, ip routing )
+// - Finding all keys with a common prefix.
+// - Enumerating a dataset of strings in lexicographical order.
 
 class Node{
    
