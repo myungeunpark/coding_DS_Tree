@@ -1,0 +1,165 @@
+// Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+// https://leetcode.com/problems/symmetric-tree/
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+// [1] Recursive 
+class Solution {
+ 
+    public boolean isSymmetric(TreeNode root) {
+       
+       if(root == null)
+           return true;
+        
+       return check(root.left, root.right);
+    }
+
+    private boolean check(TreeNode t1, TreeNode t2){
+
+        if(t1 == null && t2 == null)
+            return true;        
+        if(t1 == null || t2 == null)
+            return false;        
+        if(t1.val != t2.val)
+            return false;
+        
+        if(!check(t1.left , t2.right))
+            return false;
+        if(!check(t1.right, t2.left))
+          return false;
+        
+        return true;
+    }
+}
+// Method 2 - recursive + linkedlist
+class Node{
+    
+    int val;
+    boolean isLeft;
+}
+class Solution {
+ 
+    List<Node> leftList = null;
+    List<Node> rightList = null;
+    
+    public boolean isSymmetric(TreeNode root) {
+       
+        if(root == null)
+            return true;
+        leftList = new ArrayList<>();
+        rightList = new ArrayList<>();
+        
+        left(root.left, true);
+        right(root.right, false);
+        
+        if(leftList.size() != rightList.size())
+            return false;
+                
+        for(int i=0; i<leftList.size(); i++){
+            if(leftList.get(i).val != rightList.get(i).val)
+                return false;            
+            
+            if(leftList.get(i).isLeft == rightList.get(i).isLeft)
+                return false;            
+            
+        }
+        
+        return true;
+    }
+    
+    private void left(TreeNode root, boolean left){
+        
+        if(root == null)
+            return;
+        
+        Node node = new Node();
+        node.val = root.val;
+        node.isLeft = left;
+        leftList.add(node);
+        left(root.left, true);
+        left(root.right, false);
+        
+    }
+    
+    private void right(TreeNode root, boolean left){
+     
+        if(root == null)
+            return;
+        
+        Node node = new Node();
+        node.val = root.val;
+        node.isLeft = left;
+        rightList.add(node);
+        right(root.right, false);
+        right(root.left, true);
+    }   
+}
+
+// Method 3 - Using Queue Data structure
+class Solution {
+ 
+    public boolean isSymmetric(TreeNode root) {
+       
+       if(root == null)
+           return true;
+     
+       Queue<TreeNode> queue = new LinkedList<>();
+        
+       if(root.left != null && root.right != null){
+                
+           queue.add(root.left);
+           queue.add(root.right);
+        }else if(root.left != null && root.right == null)
+            return false;
+        else if(root.left == null && root.right != null)
+            return false;
+        
+       while((!queue.isEmpty()) && (queue.size() >= 2)){
+                   
+           TreeNode node1 = queue.remove();
+           TreeNode node2 = queue.remove();
+           
+           if(node1 != null && node2 != null){
+           
+               if(node1.val != node2.val)
+                   return false;
+
+               if(node1.left != null && node2.right != null){
+                
+                   queue.add(node1.left);
+                   queue.add(node2.right);
+               }else if(node1.left != null && node2.right == null)
+                   return false;
+               else if(node1.left == null && node2.right != null)
+                   return false;
+               
+               if(node1.right != null && node2.left != null){
+                
+                   queue.add(node1.right);
+                   queue.add(node2.left);
+               }else if(node1.right != null && node2.left == null)
+                   return false;
+               else if(node1.right == null && node2.left != null)
+                   return false;
+               
+          }
+           
+       } 
+             
+       return true;      
+        
+     }
